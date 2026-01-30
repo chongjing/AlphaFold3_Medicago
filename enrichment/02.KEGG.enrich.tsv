@@ -1,0 +1,20 @@
+TermName	GeneHitsInSelectedSet	enrichFactor	p_adj
+Transporters	175	2.491767984	9.88E-15
+Environmental Information Processing	106	2.207632053	9.88E-15
+Protein families: signaling and cellular processes	188	1.945010812	9.88E-15
+ABC transporters	74	2.510853866	3.46E-14
+Membrane transport	78	2.418676123	4.15E-14
+Brite Hierarchies	212	1.310399535	8.47E-10
+Cellular Processes	66	2.166958698	1.48E-09
+Quorum sensing	43	2.487120126	5.59E-08
+Cellular community - prokaryotes	48	2.223360113	2.86E-07
+Structural proteins	11	5.33888375	1.12E-05
+Cell motility	19	3.073902765	4.07E-05
+Bacterial chemotaxis	14	3.721040189	6.09E-05
+Peptidoglycan biosynthesis and degradation proteins	13	3.922177497	6.19E-05
+Unclassified: signaling and cellular processes	16	3.247453256	8.52E-05
+Two-component system	30	1.881424815	0.002281363
+Signal transduction	30	1.881424815	0.002281363
+Peptidases and inhibitors	13	1.727625802	0.16815492
+beta-Lactam resistance	10	1.892054333	0.160913126
+Nitrogen metabolism	6	2.232624113	0.206145053

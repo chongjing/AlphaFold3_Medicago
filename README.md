@@ -283,7 +283,8 @@ GO and KEGG enrichment:
 ```bash
 cd /data/pathology/cxia/projects/Giles/Jinpeng/05.Sinorhizobium.RNAseq/01.Data/
 
-for i in {18299090..18299092} {18299142..18299149}; do
+#SRR17176337 SRR17176355 SRR17176359: 4DPI
+for i in {18299090..18299092} {18299142..18299149} 17176337 17176355 17176359; do
         echo "Processing SRR${i} "
         /data/pathology/cxia/program/SRAToolkit/sratoolkit.3.0.10-ubuntu64/bin/prefetch SRR${i} && /data/pathology/cxia/program/SRAToolkit/sratoolkit.3.0.10-ubuntu64/bin/fastq-dump --split-files --gzip SRR${i} && rm -rf ./SRR${i}
         output_fwd_paired="SRR${i}_1P.fq.gz"
@@ -548,4 +549,102 @@ dev.off()
 ```
 A manhattan plot of iPTM and PTM.
 ![Manhattan plot](https://github.com/chongjing/AlphaFold3_Medicago/blob/main/plot/002_0.5iPTM_0.5PTM.2.jpeg)
+
+### 03.4 Distribution of number of targets
+
+```R
+library(ggplot2)
+library(dplyr)
+
+setwd("/home/cx264/rds/rds-scrna_spatial-6qULnBz5AIM/Chongjing_Xia/05.Jinpeng/04.AlphaFold3/03.analysis/03.Frequency")
+
+data <- read.table("002.20251006.iPTM_PTM.tsv", header = TRUE, sep = "\t", stringsAsFactors = FALSE)
+
+# Filter data
+score_threshold <- 0.8
+data_filtered <- data %>%
+  filter(Score >= score_threshold) %>%
+  # Ensure IDs are treated correctly
+  mutate(Medicago = as.character(Medicago),
+         Rhizobium = as.character(Rhizobium))
+
+# Count how many UNIQUE Rhizobium proteins each Medicago protein targets
+medicago_degree <- data_filtered %>%
+  group_by(Medicago) %>%
+  summarise(
+    Num_Rhizobium_Targets = n_distinct(Rhizobium),
+    .groups = 'drop'
+  )
+
+#Distribution of Medicago Protein Targets: How many Medicago proteins target X number of Rhizobium proteins?
+p5 <- ggplot(medicago_degree, aes(x = Num_Rhizobium_Targets)) +
+  geom_histogram(binwidth = 1, fill = "purple", color = "white", alpha = 0.8) + geom_text(stat = "bin", binwidth = 1,
+            aes(label = after_stat(count)),
+            vjust = -0.5, size = 10, color = "black") +
+#  geom_vline(xintercept = mean(medicago_degree$Num_Rhizobium_Targets),
+#             color = "red", linetype = "dashed", size = 1) +
+  scale_x_continuous(breaks = 1:max(medicago_degree$Num_Rhizobium_Targets)) +
+  labs(
+#    title = "Distribution of Medicago Protein Targets",
+#    subtitle = paste0("Number of Rhizobium proteins targeted per Medicago protein\n(Score cutoff >= ", score_threshold, ")"),
+    x = "Number of Rhizobium Targets (per Medicago protein)",
+    y = "Number of Medicago Proteins"
+  ) +
+  theme_classic(base_size = 25) +   # base_size controls overall font size
+  theme(
+#    plot.title = element_text(face = "bold", size = 16),
+#    plot.subtitle = element_text(size = 12),
+    axis.title = element_text(size = 20),
+    axis.text = element_text(size = 30),
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    axis.line = element_line(color = "black", size = 3),  # ensure axis lines are visible
+    panel.grid = element_blank(),                           # no grid (already absent in classic)
+    plot.margin = margin(5, 5, 5, 5)                    # add some margin
+  )
+
+ggsave("005.Medicago_Distribution.0.8.pdf", plot = p5, width = 15, height = 10)
+svg("005.Medicago_Distribution.0.8.2.svg", 15, 10)
+p5
+dev.off()
+
+#Top 10 Medicago Hub Proteins that interact with the most Rhizobium proteins
+# Let's look at the top 10 Medicago proteins that interact with the most Rhizobium proteins
+top_hubs <- medicago_degree %>%
+  arrange(desc(Num_Rhizobium_Targets)) %>%
+  head(10)
+print(top_hubs)
+
+p6 <- ggplot(top_hubs, aes(x = reorder(Medicago, -Num_Rhizobium_Targets), y = Num_Rhizobium_Targets)) +
+  geom_bar(stat = "identity", fill = "coral", alpha = 0.8) +
+  geom_text(aes(label = Num_Rhizobium_Targets), vjust = -0.5, size = 5) +
+  labs(
+#    title = "Top 10 Medicago Hub Proteins",
+    x = "Medicago Protein",
+    y = "Count of Rhizobium Targets"
+  ) +
+    theme_classic(base_size = 25) +   # base_size controls overall font size
+  theme(
+#    plot.title = element_text(face = "bold", size = 16),
+    axis.title = element_text(size = 20),
+    axis.text = element_text(size = 25),
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    axis.line = element_line(color = "black", size = 2),  # ensure axis lines are visible
+    panel.grid = element_blank(),                           # no grid (already absent in classic)
+    plot.margin = margin(5, 5, 5, 5)                    # add some margin
+  )
+
+ggsave("005.Top_Hubs.0.8.pdf", plot = p6, width = 8, height = 6)
+svg("005.Top_Hubs.0.8.2.svg")
+p6
+dev.off()
+```
+
+<table>
+  <tr>
+    <td><img src="https://github.com/chongjing/AlphaFold3_Medicago/blob/main/plot/005.Medicago_Distribution.0.8.jpeg" alt="Image 1" width="400"/></td>
+    <td><img src="https://github.com/chongjing/AlphaFold3_Medicago/blob/main/plot/005.Top_Hubs.0.8.jpeg" alt="Image 2" width="400"/></td>
+  </tr>
+</table>
+
+
 

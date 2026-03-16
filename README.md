@@ -299,7 +299,7 @@ GO and KEGG enrichment:
 </table>
 
 ## 02. Sinorhizobium.RNAseq
-### 2.1 Data Download and Trimming
+### 02.1 Data Download and Trimming
 
 ```bash
 cd /data/pathology/cxia/projects/Giles/Jinpeng/05.Sinorhizobium.RNAseq/01.Data/
@@ -319,7 +319,7 @@ for i in {18299090..18299092} {18299142..18299149} 17176337 17176355 17176359; d
         echo "Done SRR${i}"
 done
 ```
-### 2.2 Mapping and TPM counts 
+### 02.2 Mapping and TPM counts 
 
 ```bash
 output_dir="/data/pathology/cxia/projects/Giles/Jinpeng/05.Sinorhizobium.RNAseq/02.mapping/"
@@ -360,7 +360,7 @@ for i in {18299090..18299092} {18299142..18299147}; do
    echo "${sample_name} finished"
 done
 ```
-### 2.3 Expression Cluster 
+### 02.3 Expression Cluster 
 
 ```bash
 # to get TPM 

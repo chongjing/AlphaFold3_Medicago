@@ -1,4 +1,25 @@
 # AlphaFold3_Medicago
+This project is to predict interactions between 222 nodulation regulators with 653 rhizobial secreted proteins of *Sinorhizobium meliloti* 2011.
+
+## Table of Contents
+
+- [00. AlphaFold3 set-up](https://github.com/chongjing/AlphaFold3_Medicago#00-alphafold3-set-up)
+- [01. Secreted Protein Characterization of *Sinorhizobium meliloti* 2011](https://github.com/chongjing/AlphaFold3_Medicago#01-screted-protein-of-sinorhizobium-meliloti-2011)
+-- [01.1 Putative effectors](https://github.com/chongjing/AlphaFold3_Medicago?tab=readme-ov-file#011-putative-effectors)
+-- [01.2 Function Annotation](https://github.com/chongjing/AlphaFold3_Medicago?tab=readme-ov-file#012-function-annotation)
+-- [01.3 Subcellular Localization](https://github.com/chongjing/AlphaFold3_Medicago?tab=readme-ov-file#013-subcellular-location)
+-- [01.4 KEGG annotation](https://github.com/chongjing/AlphaFold3_Medicago?tab=readme-ov-file#014-kegg-annotation)
+-- [01.5 Enrichment visualization](https://github.com/chongjing/AlphaFold3_Medicago?tab=readme-ov-file#015-enrichment-visualization)
+- [02. Sinorhizobium RNAseq analysis](https://github.com/chongjing/AlphaFold3_Medicago?tab=readme-ov-file#02-sinorhizobiumrnaseq)
+-- [02.1 Data Download and Trimming](https://github.com/chongjing/AlphaFold3_Medicago?tab=readme-ov-file#021-data-download-and-trimming)
+-- [02.2 Mapping and TPM counts](https://github.com/chongjing/AlphaFold3_Medicago?tab=readme-ov-file#022-mapping-and-tpm-counts)
+-- [02.3 Expression Cluster](https://github.com/chongjing/AlphaFold3_Medicago?tab=readme-ov-file#023-expression-cluster)
+- [03. AlphaFold3 Prediction](https://github.com/chongjing/AlphaFold3_Medicago?tab=readme-ov-file#03-alphafold3-prediction)
+-- [03.1 MSA](https://github.com/chongjing/AlphaFold3_Medicago?tab=readme-ov-file#031-msa)
+-- [03.2 Inference](https://github.com/chongjing/AlphaFold3_Medicago?tab=readme-ov-file#032-inference)
+-- [03.3 AF3 summary & visualization](https://github.com/chongjing/AlphaFold3_Medicago?tab=readme-ov-file#033-af3-summary--visualization)
+-- [03.4 Distribution of number of targets](https://github.com/chongjing/AlphaFold3_Medicago?tab=readme-ov-file#034-distribution-of-number-of-targets)
+
 
 ## 00. AlphaFold3 set-up
 ```bash
@@ -61,7 +82,7 @@ nextflow run ebi-pf-team/interproscan6 \
       --input GCF_000346065.1_ASM34606v1_protein.faa  \
       --datadir interproscan --goterms --pathways
 ```
-### 01.3 Subcellular Location
+### 01.3 Subcellular Localization
 ```bash
 # prokaryotic protein using deeplocpro 1.0.0
 git clone https://github.com/Jaimomar99/deeplocpro.git
@@ -278,7 +299,7 @@ GO and KEGG enrichment:
 </table>
 
 ## 02. Sinorhizobium.RNAseq
-2.1 Data Download and Trimming
+### 2.1 Data Download and Trimming
 
 ```bash
 cd /data/pathology/cxia/projects/Giles/Jinpeng/05.Sinorhizobium.RNAseq/01.Data/
@@ -298,7 +319,7 @@ for i in {18299090..18299092} {18299142..18299149} 17176337 17176355 17176359; d
         echo "Done SRR${i}"
 done
 ```
-2.2 Mapping and TPM counts 
+### 2.2 Mapping and TPM counts 
 
 ```bash
 output_dir="/data/pathology/cxia/projects/Giles/Jinpeng/05.Sinorhizobium.RNAseq/02.mapping/"
@@ -339,7 +360,7 @@ for i in {18299090..18299092} {18299142..18299147}; do
    echo "${sample_name} finished"
 done
 ```
-2.3 Expression Cluster 
+### 2.3 Expression Cluster 
 
 ```bash
 # to get TPM 

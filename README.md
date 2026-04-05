@@ -668,4 +668,72 @@ dev.off()
 </table>
 
 
+## 04. SmRSP485 orthologues
+```bash
+## residues with pLDDT>70 are kept
+python3 /home/cx264/rds/rds-csc_programmes-FTKWLWDeHys/programs/AlphaFold3/filter_AF3.pLDDT.py sfhh103_model.cif sfhh103_confidences.json sfhh103_model.pLDDT.70.cif sfhh103_model.pLDDT.70.json
 
+/rds/project/rds-FTKWLWDeHys/programs/USalign/USalign -mol prot -mm 0 ../g7dpl7/g7dpl7_model.pLDDT.70.cif ../../04.DNF2_RSP.AF3/01.AF3/032.smrsp485/032.smrsp485_pLDDT.70.model.cif -o 01.g7dpl7_on_smrsp485
+/rds/project/rds-FTKWLWDeHys/programs/USalign/USalign -mol prot -mm 0 sfhh103_model.pLDDT.70.cif ../../04.DNF2_RSP.AF3/01.AF3/032.smrsp485/032.smrsp485_pLDDT.70.model.cif -o 01.SfRSP485_on_smrsp485
+/rds/project/rds-FTKWLWDeHys/programs/USalign/USalign -mol prot -mm 0 sfhh103_model.pLDDT.70.cif ../g7dpl7/g7dpl7_model.pLDDT.70.cif -o 01.SfRSP485_on_g7dpl7
+```
+
+```ChimeraX
+open "C:\Users\cx264\Downloads\032.smrsp485_pLDDT.70.model (1).cif"
+open C:/Users/cx264/Downloads/01.g7dpl7_on_smrsp485.cif
+open C:/Users/cx264/Downloads/01.SfRSP485_on_smrsp485.cif
+color #2 #ffaa00ff
+color #1 #ff007fff
+color #3 #00aaffff
+
+save SmRSP485_BjG7DPL7_SfRSP485.png width 4000 supersample 3 transparentBackground true
+
+# 1. Scene Setup
+graphics backgroundColor white
+lighting soft
+set silhouette true
+
+# 2. Start Recording
+movie record supersample 2
+
+# Rotates 180 degrees over 180 frames
+turn y 1 180
+#wait 180
+
+# 4. Second Action
+# Rotates another 180 degrees over 180 frames
+turn x 1 360
+#wait 180
+
+turn y 1 180
+
+# 5. Finalize
+movie stop
+movie encode SmRSO485_BjRSP485_SfRSP485.mp4 framerate 30 quality highest
+```
+
+[![Watch the video](https://github.com/chongjing/AlphaFold3_Medicago/blob/main/SmRSP485_ortholog/SmRSP485_BjG7DPL7_SfRSP485.png)](https://github.com/chongjing/AlphaFold3_Medicago/blob/main/SmRSP485_ortholog/SmRSO485_BjRSP485_SfRSP485.mp4)
+
+```ChimeraX
+# heatmap of conserved regions
+# 2. Set up the colored core (#1)
+cartoon #1
+transparency #1 0
+matchmaker #2,3 to #1 showAlignment true # Required to register attribute
+# Apply color heatmap (use whatever range looked best)
+color byattribute seq_rmsd #1 palette blue:white:red range 0,2
+
+# 3. Set up the shape context (#2,3 as transparent surface, hide ribbon)
+hide #2,3 cartoon
+surface #2,3
+color #2,3 #ff007fff # Set surface color
+transparency #2,3 85 surfaces # Make surface very faint
+key blue:0 white:1 red:2
+
+# 4. Add outlines and save
+set silhouette true
+set silhouetteWidth 1.5
+
+save SmRSP485_BjG7DPL7_SfRSP485.Heatmap.png width 4000 supersample 3 transparentBackground true
+```
+<img src="https://github.com/chongjing/AlphaFold3_Medicago/blob/main/SmRSP485_ortholog/SmRSP485_BjG7DPL7_SfRSP485.Heatmap.png" alt="Image 2" width="400"/>

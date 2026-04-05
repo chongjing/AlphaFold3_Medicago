@@ -19,6 +19,7 @@ This project is to predict interactions between 222 nodulation regulators with 6
   - [03.2 Inference](https://github.com/chongjing/AlphaFold3_Medicago?tab=readme-ov-file#032-inference)
   - [03.3 AF3 summary & visualization](https://github.com/chongjing/AlphaFold3_Medicago?tab=readme-ov-file#033-af3-summary--visualization)
   - [03.4 Distribution of number of targets](https://github.com/chongjing/AlphaFold3_Medicago?tab=readme-ov-file#034-distribution-of-number-of-targets)
+- [04. SmRSP485 orthologues](https://github.com/chongjing/AlphaFold3_Medicago/tree/main?tab=readme-ov-file#04-smrsp485-orthologues)
 
 
 ## 00. AlphaFold3 set-up

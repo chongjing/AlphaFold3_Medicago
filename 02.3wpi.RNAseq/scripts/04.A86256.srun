@@ -1,0 +1,48 @@
+#!/bin/bash
+export PATH=${CONDA_R432_BIN}:$PATH
+
+cd ../03.Mapping
+
+# we are using STAR for alignment
+input_dir="../02.CleanData"
+output_dir="../03.Mapping"
+
+# Run STAR iterate through each sample
+for sample in "$input_dir"/A86256_*/*_1P.fq.gz; do
+    cd "${output_dir}"
+
+    # Extract sample name
+    sample_name=$(basename "$sample" | cut -d'_' -f1-2)
+
+    # Set directory
+    mkdir -p "${sample_name}"
+    echo "Directory $sample_name created"
+    # Change to the newly created directory
+    cd "${sample_name}"
+    echo "Changed directory to $sample_name"
+
+    # Run STAR
+    echo "Processing ${sample_name}"
+    ulimit -n 20480
+    STAR \
+      --runThreadN 12 \
+      --genomeDir ${REF_GENOME_DIR}/STAR \
+      --readFilesIn ../02.CleanData/${sample_name}/${sample_name}_1P.fq.gz ../02.CleanData/${sample_name}/${sample_name}_2P.fq.gz \
+      --readFilesCommand zcat \
+      --outFilterMultimapNmax 1 \
+      --outSAMmultNmax 1 \
+      --outSAMtype BAM SortedByCoordinate \
+      --outFileNamePrefix ${sample_name}
+
+    samtools index ${sample_name}Aligned.sortedByCoord.out.bam
+
+    # Get expression counts
+    htseq-count --counts_output 3.${sample_name}.count.tsv --type exon --order pos --nprocesses 12 --max-reads-in-buffer 1000000 ${sample_name}Aligned.sortedByCoord.out.bam ${REF_GENOME_DIR}/genes/genes.gtf
+    # Get expression FPKM TPM
+    stringtie -p 12 -G ${REF_GENOME_DIR}/genes/genes.gtf -e -B -A 4.${sample_name}.FPKM.tsv -o ${sample_name}.stringtie.gtf ${sample_name}Aligned.sortedByCoord.out.bam
+   cd "${output_dir}"
+
+   echo "${sample_name} finished"
+done
+
+echo "STAR alignment process completed."

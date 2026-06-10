@@ -1,0 +1,3 @@
+set	n_genes	n_with_GO	n_with_KO	pct_GO	pct_KO
+query_shared_DOWN	954	556	125	58.3	13.1
+tested_universe	25950	19666	10539	75.8	40.6

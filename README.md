@@ -20,6 +20,7 @@ This project is to predict interactions between 222 nodulation regulators with 6
   - [03.3 AF3 summary & visualization](https://github.com/chongjing/AlphaFold3_Medicago?tab=readme-ov-file#033-af3-summary--visualization)
   - [03.4 Distribution of number of targets](https://github.com/chongjing/AlphaFold3_Medicago?tab=readme-ov-file#034-distribution-of-number-of-targets)
 - [04. SmRSP485 orthologues](https://github.com/chongjing/AlphaFold3_Medicago/tree/main?tab=readme-ov-file#04-smrsp485-orthologues)
+- [05. Medicago 3wpi RNA-seq](02.3wpi.RNAseq/) — Differential expression of *M. truncatula* root nodules (6 genotypes vs WT, unified edgeR model)
 
 
 ## 00. AlphaFold3 set-up
@@ -738,3 +739,13 @@ set silhouetteWidth 1.5
 save SmRSP485_BjG7DPL7_SfRSP485.Heatmap.png width 4000 supersample 3 transparentBackground true
 ```
 <img src="https://github.com/chongjing/AlphaFold3_Medicago/blob/main/SmRSP485_ortholog/SmRSP485_BjG7DPL7_SfRSP485.Heatmap.png" alt="Image 2" width="400"/>
+
+## 05. Medicago 3wpi RNA-seq
+
+Differential gene expression analysis of *M. truncatula* root nodules at 3 weeks post-inoculation. 21 samples (7 genotypes × 3 replicates): WT, *rsp86* (A86), *rsp256* (A256), *rsp485* (A485), *rsp86×rsp256* (A86256), *rsp86×rsp485* (A86485), and *dnf2* Fix⁻ control.
+
+**Pipeline:** STAR alignment → htseq-count + StringTie → unified edgeR model (all 21 samples) → glmTreat (lfc=1) → 6 genotype-vs-WT contrasts → cross-genotype summaries (UpSet, Venn, enrichment, panel heatmaps).
+
+**Key finding:** A86485 phenocopies the *dnf2* Fix⁻ mutant — 85% of A86485's DOWN-DEGs are shared with *dnf2*, dominated by leghemoglobins and nitrogen metabolism genes (textbook nitrogen-fixation collapse).
+
+See [02.3wpi.RNAseq/](02.3wpi.RNAseq/) for full analysis, scripts, figures, and tables.

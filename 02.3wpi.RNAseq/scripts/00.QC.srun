@@ -1,0 +1,36 @@
+#!/bin/bash
+export JAVA_HOME=${JAVA_HOME}
+export PATH=${CONDA_R432_BIN}:${JAVA_HOME}/bin:$PATH
+
+cd ../03.Mapping
+
+# we are using STAR for alignment
+input_dir="../02.CleanData"
+output_dir="../03.Mapping"
+
+# Run QC iterate through each sample
+for sample in "$input_dir"/*/*_1P.fq.gz; do
+    cd "${output_dir}"
+
+    # Extract sample name
+    sample_name=$(basename "$sample" | cut -d'_' -f1-2)
+
+
+# Run QC iterate through each sample
+
+    # Change to the newly created directory
+    cd "${sample_name}"
+    echo "Changed directory to $sample_name"
+
+    # Run mapinsights bamqc
+    mapinsights bamqc -r ${REF_GENOME_DIR}/fasta/genome.fa -i ${sample_name}Aligned.sortedByCoord.out.bam -o ./
+
+    # Run QualiMap
+    qualimap rnaseq -bam ${sample_name}Aligned.sortedByCoord.out.bam -gtf ${REF_GENOME_DIR}/genes/genes.gtf --java-mem-size=32G -outdir ./qualimap/ -outformat pdf
+
+   cd "${output_dir}"
+   
+   echo "${sample_name} finished"
+done
+
+echo "QC process completed."

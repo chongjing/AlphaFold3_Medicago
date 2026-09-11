@@ -1,0 +1,8 @@
+# ENA submission pack — never commit data symlinks, transient state, or drafts
+*.fq.gz
+*.log
+upload_state.tsv
+upload_stdout.log
+upload_job.id
+Draft.txt
+xml/
